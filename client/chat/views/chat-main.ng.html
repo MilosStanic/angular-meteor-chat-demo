@@ -1,0 +1,71 @@
+<navbar></navbar>
+<md-content md-scroll-y class="md-padding" style="height: 330px" scroll-glue>
+  <!--<div layout="row" class="w-100">-->
+    <!--<md-button ng-hide="mcc.messages.length < (page * pageSize)"
+               flex ng-click="showOlder()">Show older</md-button>
+  </div>
+  <div ng-repeat="msg in mcc.messages" layout="column" class="mar-ver-5">
+    <div layout="row" layout-align="start center">
+      <b>{{msg.username || '[anonymous]'}}</b>
+      <small class="pad-lef-5" am-time-ago="msg.timestamp"></small>
+    </div>
+    <div>{{msg.message}}</div>
+  </div>-->
+  <md-tabs md-selected="mcc.selectedIndex" md-border-bottom md-autoselect>
+    <md-tab ng-repeat="chat in mcc.chatsOpen">
+      <md-tab-label>
+        {{chat.nick}}
+        <md-icon md-svg-icon="content:ic_clear_24px" ng-click="mcc.closeChat(mcc.selectedIndex)"></md-icon>
+      </md-tab-label>
+      <md-tab-body class="demo-tab chat{{$index%4}}" style="padding: 25px; text-align: center;">
+        <!--<div ng-bind="tab.content"></div>-->
+        <div ng-repeat="msg in chat.messages" layout="column" class="mar-ver-5" flex>
+          <div layout="row"><span><b>{{msg.nick}}:</b></span>&nbsp;<span>{{msg.body}}</span></div>
+        </div>
+        <div ng-show="chat.typing">
+          <small>{{Chat.nick}} is typing...</small>
+        </div>     
+      </md-tab-body>
+    </md-tab>
+  </md-tabs>
+  
+  <!--</div>-->
+</md-content>
+<md-content class="md-padding" layout="column" novalidate>
+  <form name="mcc.messageForm" ng-submit="mcc.sendMessage()">
+    <div layout="row">
+      <md-input-container layout-fill>
+        <label>Message</label>
+        <input tabindex="1"
+               autofocus autocomplete="off"
+               ng-model="mcc.newMessageText"
+               ng-maxlength="500"
+               name="newMessageText"
+               ng-keypress="mcc.whenTyping($event)"
+               />
+        <div ng-if="mcc.messageForm.newMessageText.$dirty" ng-messages="mcc.messageForm.newMessageText.$error">
+          <div ng-message="maxlength">Message can be up to 500 characters long</div>
+        </div>
+      </md-input-container>
+    
+      <md-button tabindex="2"
+                 class="md-primary"
+                 role="submit"
+                 type="submit"
+                 aria-label="send"
+                 ng-disabled="mcc.messageForm.$invalid || !mcc.newMessageText">
+                 <md-icon md-svg-icon="content:ic_send_24px"></md-icon>
+      </md-button>
+    </div>
+  </form>
+</md-content>
+<md-content>
+  <md-grid-list
+        md-cols-gt-md="12" md-cols-sm="3" md-cols-md="8"
+        md-row-height-gt-md="1:1" md-row-height="4:3"
+        md-gutter-gt-md="16px" md-gutter-gt-sm="8px" md-gutter="4px">
+    <md-grid-tile ng-repeat="fuser in mcc.featuredUsers">
+      <md-button ng-show="fuser._id != $root.currentUser._id" ng-click="mcc.openChat(fuser)">{{fuser.emails[0].address}}</md-button>
+    </md-grid-tile>
+  </md-grid-list>
+</md-content>

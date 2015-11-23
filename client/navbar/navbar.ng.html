@@ -1,0 +1,11 @@
+<md-toolbar class="md-toolbar-tools" layout-align="space-between" layout="row">	
+    <h1>Chat App</h1>
+    <div layout="row" ng-show="$root.currentUser">
+    	<md-button ui-sref="logout">Logout</md-button>
+    	<md-button ui-sref="admin" ng-show="nc.isAdmin()">Admin</md-button>
+    </div>
+    <div layout="row" ng-hide="$root.currentUser" layout-padding>
+        <a ui-sref="login" class="md-button md-primary"> Sign in </a>
+        <a ui-sref="register" class="md-button md-primary"> Register </a>
+    </div>
+</md-toolbar>
